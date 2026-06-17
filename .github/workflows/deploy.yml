@@ -15,48 +15,43 @@ permissions:
 jobs:
   deploy:
     name: Deploy
-    runs-on: ubuntu-latest #could be bash
+    runs-on: ubuntu-latest
 
     steps:
-    # Checkout the repository to the GitHub Actions runner
-    - name: Checkout Code
-      uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v3
-      with:
-        terraform_version: 1.12.0 #**update to latest**
-    
-    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
-        aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-        aws-region: us-east-1
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.12.0
 
-    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
-    - name: Terraform Init
-      working-directory: terraform/envs/dev
-      run: terraform init
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
-    # Checks that all Terraform configuration files adhere to a canonical format
-    - name: Terraform Format
-      working-directory: terraform/envs/dev
-      run: terraform fmt -check -recursive
+      - name: Terraform Init
+        working-directory: terraform/envs/dev
+        run: |
+          terraform init \
+            -backend-config="bucket=${{ secrets.TF_STATE_BUCKET }}" \
+            -backend-config="region=${{ secrets.AWS_REGION }}" \
+            -backend-config="dynamodb_table=${{ secrets.TF_LOCK_TABLE }}"
 
-    - name: Terraform Validate
-      working-directory: terraform/envs/dev
-      run: terraform validate
+      - name: Terraform Format
+        working-directory: terraform/envs/dev
+        run: terraform fmt -check -recursive
 
-    # Generates an execution plan for Terraform
-    - name: Terraform Plan
-      working-directory: terraform/envs/dev
-      run: terraform plan 
+      - name: Terraform Validate
+        working-directory: terraform/envs/dev
+        run: terraform validate
 
-      # On push to "main", build or change infrastructure according to Terraform configuration files
-      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
-    - name: Terraform Apply
-      working-directory: terraform/envs/dev
-      run: terraform apply -auto-approve 
+      - name: Terraform Plan
+        working-directory: terraform/envs/dev
+        run: terraform plan
+
+      - name: Terraform Apply
+        working-directory: terraform/envs/dev
+        run: terraform apply -auto-approve
