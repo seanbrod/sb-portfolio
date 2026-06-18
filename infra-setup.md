@@ -123,80 +123,30 @@ The script creates the S3 bucket (with versioning, encryption, and public access
 
 This replaces the legacy IAM user + static key approach. GitHub Actions exchanges a short-lived OIDC token for temporary AWS credentials — no secrets to rotate or leak.
 
-#### 3a — Create the OIDC Identity Provider (once per AWS account)
+Add the three new variables to your `.env` file (the same one used in Step 2):
 
-```bash
-aws iam create-open-id-connect-provider \
-  --url "https://token.actions.githubusercontent.com" \
-  --client-id-list "sts.amazonaws.com" \
-  --thumbprint-list "6938fd4d98bab03faadb97b34396831e3780aea1"
+```
+GITHUB_USERNAME=your-github-username
+GITHUB_REPO=your-repo-name
+IAM_ROLE_NAME=github-actions-terraform-deployer
 ```
 
-> If the provider already exists you'll get an `EntityAlreadyExists` error — that's fine, skip this step.
-
-#### 3b — Create the trust policy
-
-Replace `YOUR-GITHUB-USERNAME` and `YOUR-REPO-NAME` with your values. The `ref:refs/heads/main` condition locks the role to the main branch only.
+Then run the setup script:
 
 ```bash
-cat > /tmp/trust-policy.json <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Federated": "arn:aws:iam::$(aws sts get-caller-identity --query Account --output text):oidc-provider/token.actions.githubusercontent.com"
-      },
-      "Action": "sts:AssumeRoleWithWebIdentity",
-      "Condition": {
-        "StringEquals": {
-          "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
-          "token.actions.githubusercontent.com:sub": "repo:YOUR-GITHUB-USERNAME/YOUR-REPO-NAME:ref:refs/heads/main"
-        }
-      }
-    }
-  ]
-}
-EOF
+chmod +x scripts/setup-oidc-role.sh
+./scripts/setup-oidc-role.sh           # loads .env by default
+./scripts/setup-oidc-role.sh .env.prod # or pass a custom env file
 ```
 
-#### 3c — Create the IAM role
+The script handles all sub-steps automatically:
+- **3a** — Creates the OIDC Identity Provider (skips gracefully if it already exists)
+- **3b** — Generates a scoped trust policy locked to your repo + main branch
+- **3c** — Creates the IAM role
+- **3d** — Attaches S3 and DynamoDB policies for state management
+- **3e** — Prints the Role ARN you'll need for Step 4
 
-```bash
-aws iam create-role \
-  --role-name github-actions-terraform-deployer \
-  --assume-role-policy-document file:///tmp/trust-policy.json
-```
-
-#### 3d — Attach permissions
-
-Attach the minimum policies needed. Expand this list as your infrastructure grows.
-
-```bash
-# State management
-aws iam attach-role-policy \
-  --role-name github-actions-terraform-deployer \
-  --policy-arn arn:aws:iam::aws:policy/AmazonS3FullAccess
-
-aws iam attach-role-policy \
-  --role-name github-actions-terraform-deployer \
-  --policy-arn arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
-
-# Add additional policies for the resources you will deploy, e.g.:
-# arn:aws:iam::aws:policy/AmazonEC2FullAccess
-# arn:aws:iam::aws:policy/AWSLambda_FullAccess
-```
-
-#### 3e — Note the Role ARN
-
-```bash
-aws iam get-role \
-  --role-name github-actions-terraform-deployer \
-  --query 'Role.Arn' \
-  --output text
-# Output: arn:aws:iam::123456789012:role/github-actions-terraform-deployer
-```
+> Add additional IAM policies to the role as you define new resources in `main.tf` (e.g., `AmazonEC2FullAccess`, `AWSLambda_FullAccess`).
 
 ### Step 4: Configure GitHub Repository Secrets
 
