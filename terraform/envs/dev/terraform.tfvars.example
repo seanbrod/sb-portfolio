@@ -12,3 +12,6 @@ aws_region   = "us-east-1"
 environment  = "dev"
 state_bucket = "terraform-state-your-project-placeholder"
 lock_table   = "terraform-state-lock-your-project-placeholder"
+
+# Optional — defaults to PriceClass_100 (US/Canada/Europe)
+# price_class = "PriceClass_All"
