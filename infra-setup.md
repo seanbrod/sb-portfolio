@@ -38,20 +38,25 @@
 │   IAM OIDC Identity Provider (token.actions.githubusercontent.com)          │
 │     └─> IAM Role: github-actions-terraform-deployer                         │
 │           • Scoped trust policy (your repo + main branch only)              │
-│           • S3 + DynamoDB access for state management                       │
-│           • Resource permissions for your infrastructure                    │
+│           • S3 + DynamoDB + CloudFront access                               │
 │                                                                             │
 │   STATE MANAGEMENT                  TERRAFORM CONFIG                        │
 │     S3 Bucket (remote state)   <──  terraform/envs/dev/                     │
-│       • Versioning enabled             main.tf      — provider, backend     │
-│       • AES256 encryption              variables.tf — input variables       │
-│       • Public access blocked          outputs.tf   — resource outputs      │
-│     DynamoDB Table (locking)                                                │
+│       • Versioning enabled             main.tf      — provider, backend,    │
+│       • AES256 encryption                             resources             │
+│       • Public access blocked          variables.tf — input variables       │
+│     DynamoDB Table (locking)           outputs.tf   — resource outputs      │
 │       • Prevents concurrent runs                                            │
 │                                                                             │
 │   DEPLOYED RESOURCES                                                        │
-│     Default tags auto-applied: Environment, Project, ManagedBy              │
-│     Add your actual resources to main.tf                                    │
+│     CloudFront Distribution (CDN)                                           │
+│       • HTTPS only (redirect HTTP)                                          │
+│       • Security response headers                                           │
+│       • SPA error routing (403/404 → index.html)                           │
+│       └─> Origin Access Control (OAC)                                       │
+│             └─> S3 Bucket (static site)                                     │
+│                   • Fully private — CloudFront-only access                  │
+│                   • Versioning enabled                                       │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -63,7 +68,8 @@
 │   └── workflows/
 │       └── deploy.yml          # CI/CD: OIDC auth, Terraform plan + apply
 ├── scripts/
-│   └── bootstrap-state.sh      # One-time setup: S3 state bucket + DynamoDB lock table
+│   ├── bootstrap-state.sh      # One-time setup: S3 state bucket + DynamoDB lock table
+│   └── setup-oidc-role.sh      # One-time setup: GitHub Actions OIDC IAM role
 ├── .env.example                # Template for local .env (never commit .env)
 ├── terraform/
 │   ├── envs/

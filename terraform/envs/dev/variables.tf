@@ -27,3 +27,9 @@ variable "lock_table" {
   type        = string
   default     = "terraform-state-lock-your-project"
 }
+
+variable "price_class" {
+  description = "CloudFront price class. PriceClass_100 = US/Canada/Europe (cheapest for dev)."
+  type        = string
+  default     = "PriceClass_100"
+}
