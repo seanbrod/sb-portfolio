@@ -230,3 +230,12 @@ crash.*.log
 
 #misc
 sean_accessKeys.csv
+info.md
+resume_sean_updated.tex
+resume_ext.md
+
+# Nuxt
+node_modules/
+.nuxt/
+.output/
+dist/

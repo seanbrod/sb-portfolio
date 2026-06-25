@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'terraform/**'
+      - 'src/**'
       - '.github/workflows/deploy.yml'
 
 permissions:
@@ -21,10 +22,18 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: src/package-lock.json
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.12.0
+          terraform_wrapper: false
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -40,7 +49,7 @@ jobs:
             -backend-config="region=${{ secrets.AWS_REGION }}" \
             -backend-config="dynamodb_table=${{ secrets.TF_LOCK_TABLE }}"
 
-      - name: Terraform Format
+      - name: Terraform Format Check
         working-directory: terraform/envs/dev
         run: terraform fmt -check -recursive
 
@@ -55,3 +64,39 @@ jobs:
       - name: Terraform Apply
         working-directory: terraform/envs/dev
         run: terraform apply -auto-approve
+
+      - name: Get Terraform Outputs
+        id: tf-outputs
+        working-directory: terraform/envs/dev
+        run: |
+          echo "bucket=$(terraform output -raw site_bucket_name)" >> $GITHUB_OUTPUT
+          echo "cf_id=$(terraform output -raw cloudfront_distribution_id)" >> $GITHUB_OUTPUT
+
+      - name: Install Dependencies
+        working-directory: src
+        run: npm ci
+
+      - name: Build Site
+        working-directory: src
+        run: npm run build
+
+      - name: Sync Hashed Assets to S3
+        run: |
+          aws s3 sync src/.output/public/ \
+            s3://${{ steps.tf-outputs.outputs.bucket }}/ \
+            --exclude "*" --include "_nuxt/*" \
+            --cache-control "public,max-age=31536000,immutable"
+
+      - name: Sync HTML and Static Files to S3
+        run: |
+          aws s3 sync src/.output/public/ \
+            s3://${{ steps.tf-outputs.outputs.bucket }}/ \
+            --exclude "_nuxt/*" \
+            --delete \
+            --cache-control "no-cache"
+
+      - name: Invalidate CloudFront Cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ steps.tf-outputs.outputs.cf_id }} \
+            --paths "/*"
