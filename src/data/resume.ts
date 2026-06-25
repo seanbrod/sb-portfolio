@@ -4,27 +4,45 @@ export const skills = [
     items: ['Python', 'C', 'Java', 'C++', 'SQL'],
   },
   {
-    category: 'Cloud Computing & DevOps',
-    items: ['AWS (S3, EC2, SageMaker)', 'Google Cloud (Colab, AI)', 'Microsoft Azure (GCCH, Data Factory, DevOps)', 'OSC', 'GitHub', 'Git', 'Docker', 'Singularity', 'Agile'],
+    category: 'AI & Machine Learning',
+    items: ['PyTorch', 'scikit-learn', 'vLLM', 'Pandas', 'Hugging Face', 'Data Clustering', 'Databricks'],
   },
   {
-    category: 'Machine Learning & AI',
-    items: ['PyTorch', 'LangChain/LangGraph', 'scikit-learn', 'vLLM', 'Pandas', 'Azure AI Foundry', 'Hugging Face', 'Data Clustering', 'Databricks'],
+    category: 'Agentic AI & LLM',
+    items: ['LangChain/LangGraph', 'MCP', 'Google A2A', 'Azure AI Foundry'],
   },
   {
-    category: 'Technology & Tools',
-    items: ['Linux (RHEL, Ubuntu, Debian, AWS, Arch)', 'Windows', 'Kafka', 'Spark', 'Airflow', 'SQLite', 'PostgreSQL'],
+    category: 'Cloud & Infrastructure',
+    items: ['AWS', 'Google Cloud', 'Microsoft Azure', 'OSC', 'Docker', 'Singularity', 'Terraform', 'GitHub', 'Git'],
+  },
+  {
+    category: 'Data & Systems',
+    items: ['Kafka', 'Spark', 'Airflow', 'PostgreSQL', 'SQLite', 'MongoDB', 'Linux (RHEL, Ubuntu, Debian, Arch)', 'Agile'],
+  },
+  {
+    category: 'Languages',
+    items: ['English (native)', 'Mandarin (proficient)', 'ASL (basic)'],
   },
 ]
 
 export const experience = [
+  {
+    title: 'Software Developer Intern',
+    company: 'Progressive Insurance',
+    location: 'Mayfield Village, OH',
+    period: 'May 2026 – Present',
+    bullets: [
+      'Engineered a multi-agent daily research system using frontier LLMs, MCP, AWS, Terraform, and Google A2A that autonomously surfaces emerging tech trends and delivers curated digest emails to internal subscribers.',
+      'Built a voice-to-voice AI agent using Terraform and AWS to automate project request intake for the Innovation Services team, replacing manual intake meetings.',
+    ],
+  },
   {
     title: 'AI Engineer Intern',
     company: 'Union Home Mortgage',
     location: 'Strongsville, OH',
     period: 'May 2025 – August 2025',
     bullets: [
-      'Utilized ML-based data clustering, LLM engineering, and RAG to automate an internal tool used company-wide, saving partners an estimated 15 hours per week.',
+      'Automated a company-wide internal tool using ML-based data clustering, LLM engineering, and RAG, saving partners an estimated 15 hours per week.',
       'Built and Dockerized a FastAPI-based microservice for document retrieval and OCR/VLM-powered data extraction (PDF, DOCX, Excel) from SharePoint and the web, enabling automated data processing across two internal systems.',
     ],
   },
@@ -34,7 +52,8 @@ export const experience = [
     location: 'Columbus, OH',
     period: 'August 2024 – May 2025',
     bullets: [
-      'Developed a secure AI application used on actively deployed DoD contracts. Used a custom fine-tuned and quantized LLM model with a SQLite vector store for RAG. Containerized with Singularity on HPC servers at OSC.',
+      'Supported DoD CMMC 2.0 Level 2 compliance by assessing security requirements and evaluating Managed Service Providers for strategic partnerships.',
+      'Developed a secure AI application on actively deployed DoD contracts, using a custom fine-tuned and quantized LLM with a SQLite vector store for RAG; containerized with Singularity on HPC servers at OSC.',
     ],
   },
   {
@@ -44,7 +63,7 @@ export const experience = [
     period: 'May 2024 – July 2024',
     bullets: [
       'Engineered an AI-powered financial document analysis application using Microsoft Azure, capable of processing 1,000+ page files and extracting key data into Excel; saved $25K annually by eliminating outsourced processing.',
-      'Leveraged OpenAI API, Azure AI Foundry, and containerized local portion of application with Docker to optimize efficiency and scalability.',
+      'Leveraged OpenAI API and Azure AI Foundry, containerizing the application with Docker to improve deployment efficiency and scalability.',
     ],
   },
   {
@@ -53,8 +72,18 @@ export const experience = [
     location: 'Beachwood, OH',
     period: 'July 2023 – May 2024',
     bullets: [
-      'Used Python to recover a locked critical email account, contributing to a favorable outcome in a $4M civil case.',
-      'Delivered tailored IT and software solutions, resolving over eight company-wide issues and enhancing operational efficiency.',
+      'Recovered a locked critical email account using Python, directly contributing to a favorable outcome in a $4M civil case.',
+      'Delivered tailored IT and software solutions across eight+ company-wide issues, improving operational workflows and system reliability.',
+    ],
+  },
+  {
+    title: 'IT & Software Consultant',
+    company: 'National Diagnostic Imaging',
+    location: 'Beachwood, OH',
+    period: 'February 2022 – May 2024',
+    bullets: [
+      'Managed the recovery and restoration of company accounts and data following a ransomware attack, ensuring a swift return to essential operations.',
+      'Trained team members on software tools and workflows, improving daily productivity and reducing reliance on external IT support.',
     ],
   },
   {
@@ -63,8 +92,17 @@ export const experience = [
     location: 'Parma, OH',
     period: 'June 2023 – August 2023',
     bullets: [
-      'Trained and quantized a custom YOLO object detection model on NVIDIA Jetson Nano, utilized in a prototype smart cooler.',
-      'Processed and trained varying computer vision models using AWS services, including EC2, S3, and SageMaker.',
+      'Trained and quantized a custom YOLO object detection model for deployment on NVIDIA Jetson Nano, integrated into a prototype smart cooler product.',
+      'Trained and evaluated multiple computer vision models using AWS EC2, S3, and SageMaker for scalable model development.',
+    ],
+  },
+  {
+    title: 'IT Intern',
+    company: 'Direct Recruiters Inc.',
+    location: 'Solon, OH',
+    period: 'May 2023',
+    bullets: [
+      'Integrated new accounts into the DRI network during a company merger, using MongoDB for structured data management.',
     ],
   },
 ]
@@ -89,9 +127,9 @@ export const involvement = [
     location: 'Columbus, OH',
     period: 'August 2023 – Present',
     bullets: [
-      'Worked on object detection for autonomous drones; placed 4th in 2024 and 7th in 2025 SUAS competitions.',
-      'Trained YOLO and other computer vision models, and deployed them on an Nvidia Jetson Orin AGX mounted on the drone.',
-      'Designed a pipeline for training, testing, and fine-tuning computer vision models, generating easily interpretable data on model performance to accelerate development cycles.',
+      'Secured sponsorships from Anduril, General Electric, and Boom Supersonic as Treasurer, nearly doubling the organization\'s annual budget from the prior year.',
+      'Placed 4th out of 70+ teams at the 2024 SUAS Competition and 7th in 2025, developing autonomous drones for real-world package delivery missions.',
+      'Led object detection development — trained YOLO and CV models deployed on Nvidia Jetson Orin AGX, and designed a training and fine-tuning pipeline on OSC HPC resources.',
     ],
   },
   {
@@ -100,7 +138,26 @@ export const involvement = [
     location: 'Columbus, OH',
     period: 'September 2023 – Present',
     bullets: [
-      'Led a team in three AI-focused hackathons, developing an email-scraping bot for inbox organization, a locally hosted Phi-3 chatbot for offline use, and a Whisper-powered multi-chat app to assist the deaf and hard of hearing.',
+      'Developed a custom CNN using PyTorch on the FER2013 dataset for emotion recognition.',
+      'Led a team in three AI-focused hackathons, building an email-scraping bot, a locally hosted Phi-3 chatbot for offline use, and a Whisper-powered multi-chat app to assist the deaf and hard of hearing.',
+    ],
+  },
+  {
+    role: 'Founder & President',
+    organization: 'Irish Culture Club',
+    location: 'Solon, OH',
+    period: 'August 2021 – May 2023',
+    bullets: [
+      'Founded the Irish Culture Club, growing membership to 80+ students and fostering cultural engagement across the school community.',
+    ],
+  },
+  {
+    role: 'Volunteer',
+    organization: 'Friendship Circle of Cleveland',
+    location: 'Cleveland, OH',
+    period: 'February 2022 – May 2023',
+    bullets: [
+      'Dedicated 50+ hours to nurturing relationships with children with disabilities, enhancing community inclusion and support.',
     ],
   },
 ]
