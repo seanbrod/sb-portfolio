@@ -54,9 +54,9 @@ h1 { font-size: 2rem; margin: 0 0 0.2rem; color: var(--text); }
   display: inline-block;
   font-size: 0.8rem;
   font-weight: 600;
-  color: #a5b4fc;
-  background: rgba(99, 102, 241, 0.12);
-  border: 1px solid rgba(99, 102, 241, 0.3);
+  color: var(--accent);
+  background: rgba(96, 165, 250, 0.1);
+  border: 1px solid rgba(96, 165, 250, 0.25);
   border-radius: 20px;
   padding: 0.2rem 0.65rem;
   margin: 0 0 1.2rem;
@@ -90,11 +90,11 @@ h2 {
 .skill-tags { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .skill-tags li {
   padding: 0.3rem 0.75rem;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
+  background: rgba(96, 165, 250, 0.1);
+  border: 1px solid rgba(96, 165, 250, 0.25);
   border-radius: 4px;
   font-size: 0.875rem;
-  color: var(--text-muted);
+  color: var(--accent);
 }
 .languages { margin: 0.75rem 0 0; font-size: 0.8rem; color: var(--text-faint); }
 

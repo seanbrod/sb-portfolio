@@ -80,10 +80,10 @@ h1 { font-size: 2rem; margin: 0 0 1.5rem; color: var(--text); }
 .tech-tags span {
   font-size: 0.78rem;
   padding: 0.2rem 0.5rem;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
+  background: rgba(96, 165, 250, 0.1);
+  border: 1px solid rgba(96, 165, 250, 0.25);
   border-radius: 4px;
-  color: var(--text-muted);
+  color: var(--accent);
 }
 
 .card-links { display: flex; gap: 1.25rem; }
