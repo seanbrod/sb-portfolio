@@ -77,14 +77,14 @@ useSeoMeta({ title: 'Resume' })
 <style scoped>
 .resume { padding: 1rem 0; }
 
-h1 { font-size: 2rem; margin: 0 0 1.5rem; }
+h1 { font-size: 2rem; margin: 0 0 1.5rem; color: var(--text); }
 
 h2 {
-  font-size: 1rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #888;
-  border-bottom: 1px solid #e5e5e5;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+  border-bottom: 1px solid var(--border);
   padding-bottom: 0.5rem;
   margin-bottom: 1rem;
 }
@@ -95,11 +95,11 @@ section { margin-bottom: 2.5rem; }
   display: flex;
   gap: 1rem;
   padding: 0.45rem 0;
-  border-bottom: 1px solid #f5f5f5;
+  border-bottom: 1px solid var(--border);
   font-size: 0.9rem;
 }
-.skill-category { font-weight: 600; min-width: 210px; color: #333; flex-shrink: 0; }
-.skill-items { color: #555; }
+.skill-category { font-weight: 600; min-width: 210px; color: var(--text); flex-shrink: 0; }
+.skill-items { color: var(--text-muted); }
 
 .entry { margin-bottom: 1.5rem; }
 
@@ -113,22 +113,22 @@ section { margin-bottom: 2.5rem; }
 }
 
 .entry-left { display: flex; align-items: baseline; flex-wrap: wrap; }
-.entry-title { font-weight: 700; font-size: 0.95rem; }
-.entry-org { color: #555; font-size: 0.9rem; }
+.entry-title { font-weight: 700; font-size: 0.95rem; color: var(--text); }
+.entry-org { color: var(--text-muted); font-size: 0.9rem; }
 
 .entry-right {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   font-size: 0.82rem;
-  color: #777;
+  color: var(--text-faint);
   line-height: 1.4;
 }
 
 .bullets { margin: 0; padding-left: 1.25rem; }
 .bullets li {
   font-size: 0.88rem;
-  color: #333;
+  color: var(--text-muted);
   margin-bottom: 0.3rem;
   line-height: 1.55;
 }

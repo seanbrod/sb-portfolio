@@ -13,7 +13,7 @@ export const about = {
     'Grew BuckeyeVertical\'s annual budget ~2x as Treasurer, securing Anduril, GE & Boom Supersonic as sponsors',
   ],
 
-  topSkills: ['Python', 'LLM / Multi-Agent Systems', 'PyTorch', 'AWS', 'Docker', 'Computer Vision'],
+  topSkills: ['Python', 'LLM / Multi-Agent Systems', 'Kafka', 'Spark', 'AWS', 'Docker', 'Computer Vision'],
 
   languages: ['English (native)', 'Mandarin (proficient)', 'ASL (basic)'],
 

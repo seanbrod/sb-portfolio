@@ -9,7 +9,7 @@ export const skills = [
   },
   {
     category: 'Agentic AI & LLM',
-    items: ['LangChain/LangGraph', 'MCP', 'Google A2A', 'Azure AI Foundry'],
+    items: ['LangChain/LangGraph', 'MCP', 'Google A2A', 'Azure AI Foundry', 'AWS Bedrock'],
   },
   {
     category: 'Cloud & Infrastructure',
@@ -17,7 +17,7 @@ export const skills = [
   },
   {
     category: 'Data & Systems',
-    items: ['Kafka', 'Spark', 'Airflow', 'PostgreSQL', 'SQLite', 'MongoDB', 'Linux (RHEL, Ubuntu, Debian, Arch)', 'Agile'],
+    items: ['Kafka', 'Spark', 'PostgreSQL', 'SQLite', 'NoSQL', 'Linux (RHEL, Ubuntu, Debian, Arch)', 'Agile'],
   },
   {
     category: 'Languages',
@@ -33,7 +33,7 @@ export const experience = [
     period: 'May 2026 – Present',
     bullets: [
       'Engineered a multi-agent daily research system using frontier LLMs, MCP, AWS, Terraform, and Google A2A that autonomously surfaces emerging tech trends and delivers curated digest emails to internal subscribers.',
-      'Built a voice-to-voice AI agent using Terraform and AWS to automate project request intake for the Innovation Services team, replacing manual intake meetings.',
+      'Designed and built a full-stack Nuxt.js application that automates the project intake lifecycle for the Innovation Services team. Engineered a voice-to-voice AI agent meeting interface, secure authentication, and a serverless AWS backend (DynamoDB, S3, SNS, SES, Bedrock) deployed via Terraform to eliminate manual intake workflows.',
     ],
   },
   {
