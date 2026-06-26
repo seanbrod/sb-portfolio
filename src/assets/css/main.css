@@ -2,9 +2,22 @@
   box-sizing: border-box;
 }
 
+:root {
+  --bg:          #121212;
+  --bg-surface:  #1a1a1a;
+  --bg-elevated: #222222;
+  --text:        #E5E7EB;
+  --text-muted:  #9CA3AF;
+  --text-faint:  #6B7280;
+  --border:      rgba(255, 255, 255, 0.08);
+  --accent:      #60A5FA;
+  --accent-dark: #3B82F6;
+  --accent-2:    #F59E0B;
+}
+
 body {
   margin: 0;
-  color: #1a1a1a;
-  background: #fff;
+  color: var(--text);
+  background: var(--bg);
   line-height: 1.6;
 }

@@ -36,14 +36,16 @@ useHead({
   align-items: center;
   justify-content: space-between;
   padding: 1rem 2rem;
-  border-bottom: 1px solid #e5e5e5;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
 }
 
 .brand {
   font-size: 1.2rem;
   font-weight: 700;
   text-decoration: none;
-  color: #1a1a1a;
+  color: var(--text);
+  letter-spacing: -0.01em;
 }
 
 .site-nav {
@@ -53,13 +55,25 @@ useHead({
 
 .site-nav a {
   text-decoration: none;
-  color: #555;
+  color: var(--text-muted);
   font-size: 0.95rem;
+  padding-bottom: 2px;
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-size: 0% 2px;
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  transition: color 0.2s, background-size 0.25s ease;
+}
+
+.site-nav a:hover {
+  color: var(--text);
+  background-size: 100% 2px;
 }
 
 .site-nav a.router-link-active {
-  color: #1a1a1a;
+  color: var(--text);
   font-weight: 600;
+  background-size: 100% 2px;
 }
 
 .site-main {
@@ -72,9 +86,9 @@ useHead({
 
 .site-footer {
   padding: 1rem 2rem;
-  border-top: 1px solid #e5e5e5;
+  border-top: 1px solid var(--border);
   text-align: center;
   font-size: 0.85rem;
-  color: #888;
+  color: var(--text-faint);
 }
 </style>
