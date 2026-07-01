@@ -122,7 +122,7 @@ export const education = [
 
 export const involvement = [
   {
-    role: 'Software Member & Treasurer',
+    role: 'Object Detection Lead & Treasurer',
     organization: 'BuckeyeVertical',
     location: 'Columbus, OH',
     period: 'August 2023 – Present',

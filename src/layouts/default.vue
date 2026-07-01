@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { about } from '~/data/about'
+
 useHead({
   titleTemplate: (title) => title ? `${title} | Sean Broderick` : 'Sean Broderick',
 })
@@ -7,7 +9,20 @@ useHead({
 <template>
   <div class="site">
     <header class="site-header">
-      <NuxtLink to="/" class="brand">Sean Broderick</NuxtLink>
+      <div class="brand-group">
+        <NuxtLink to="/" class="brand">Sean Broderick</NuxtLink>
+        <span class="brand-divider">|</span>
+        <div class="header-social">
+          <a
+            v-for="link in about.links"
+            :key="link.label"
+            :href="link.url"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="social-link"
+          >{{ link.label }}</a>
+        </div>
+      </div>
       <nav class="site-nav">
         <NuxtLink to="/">About</NuxtLink>
         <NuxtLink to="/resume">Resume</NuxtLink>
@@ -40,12 +55,48 @@ useHead({
   border-bottom: 1px solid var(--border);
 }
 
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .brand {
   font-size: 1.2rem;
   font-weight: 700;
   text-decoration: none;
   color: var(--text);
   letter-spacing: -0.01em;
+  cursor: default;
+}
+
+.brand-divider {
+  color: var(--border);
+  font-weight: 300;
+  font-size: 1.1rem;
+  user-select: none;
+}
+
+.header-social {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.social-link {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  padding-bottom: 2px;
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-size: 0% 2px;
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  transition: color 0.2s, background-size 0.25s ease;
+}
+
+.social-link:hover {
+  color: var(--text);
+  background-size: 100% 2px;
 }
 
 .site-nav {
@@ -79,7 +130,7 @@ useHead({
 .site-main {
   flex: 1;
   padding: 2rem;
-  max-width: 900px;
+  max-width: 1400px;
   margin: 0 auto;
   width: 100%;
 }
