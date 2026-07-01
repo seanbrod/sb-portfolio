@@ -51,6 +51,7 @@ useHead({
   align-items: center;
   justify-content: space-between;
   padding: 1rem 2rem;
+  gap: 1.5rem;
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border);
 }
@@ -59,6 +60,8 @@ useHead({
   display: flex;
   align-items: center;
   gap: 1rem;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .brand {
@@ -75,11 +78,13 @@ useHead({
   font-weight: 300;
   font-size: 1.1rem;
   user-select: none;
+  margin: 0 0.25rem;
 }
 
 .header-social {
   display: flex;
   gap: 1.25rem;
+  white-space: nowrap;
 }
 
 .social-link {
@@ -102,6 +107,8 @@ useHead({
 .site-nav {
   display: flex;
   gap: 2rem;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .site-nav a {
@@ -125,6 +132,55 @@ useHead({
   color: var(--text);
   font-weight: 600;
   background-size: 100% 2px;
+}
+
+/* ── Responsive header ────────────────────────────── */
+@media (max-width: 900px) {
+  .site-header {
+    padding: 0.85rem 1.25rem;
+    gap: 1rem;
+  }
+
+  .brand { font-size: 1.05rem; }
+
+  .header-social { gap: 1rem; }
+
+  .social-link,
+  .site-nav a {
+    font-size: 0.85rem;
+  }
+
+  .site-nav { gap: 1.5rem; }
+}
+
+@media (max-width: 600px) {
+  .site-header {
+    flex-wrap: wrap;
+    padding: 0.75rem 1rem;
+    gap: 0.5rem;
+  }
+
+  .brand-group {
+    width: 100%;
+    justify-content: center;
+    gap: 0.6rem;
+  }
+
+  .brand { font-size: 0.95rem; }
+
+  .brand-divider { margin: 0; }
+
+  .header-social { gap: 0.85rem; }
+
+  .social-link { font-size: 0.8rem; }
+
+  .site-nav {
+    width: 100%;
+    justify-content: center;
+    gap: 1.25rem;
+  }
+
+  .site-nav a { font-size: 0.82rem; }
 }
 
 .site-main {

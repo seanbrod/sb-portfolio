@@ -6,10 +6,6 @@ useSeoMeta({ title: 'About' })
 
 const activeTab = ref<'highlights' | 'bio' | null>(null)
 
-function toggleTab(tab: 'highlights' | 'bio') {
-  activeTab.value = activeTab.value === tab ? null : tab
-}
-
 const subtitleParts = about.subtitle.split(' · ')
 const institution = subtitleParts[0]
 const specialization = subtitleParts.slice(1).join(' · ')
@@ -21,44 +17,45 @@ const specialization = subtitleParts.slice(1).join(' · ')
     <div class="identity-center">
 
       <!-- Identity hierarchy -->
-      <h1>SEAN M. BRODERICK</h1>
+      <h1>SEAN BRODERICK</h1>
       <p class="id-role">{{ about.title }} | {{ institution }}</p>
       <p class="id-meta">{{ specialization }}</p>
       <span class="availability">{{ about.availability }}</span>
 
-      <!-- Horizontal tab switcher: closed by default, toggleable -->
-      <nav class="tab-nav">
-        <button
-          class="tab-link"
-          :class="{ active: activeTab === 'bio' }"
-          @click="toggleTab('bio')"
-        >
-          Bio
-        </button>
-        <button
-          class="tab-link"
-          :class="{ active: activeTab === 'highlights' }"
-          @click="toggleTab('highlights')"
-        >
-          Hightlights
-        </button>
-      </nav>
+      <!-- Hover-driven tab switcher — closes when cursor leaves entire block -->
+      <div class="tab-container" @mouseleave="activeTab = null">
+        <nav class="tab-nav">
+          <button
+            class="tab-link"
+            :class="{ active: activeTab === 'bio' }"
+            @mouseenter="activeTab = 'bio'"
+          >
+            Bio
+          </button>
+          <button
+            class="tab-link"
+            :class="{ active: activeTab === 'highlights' }"
+            @mouseenter="activeTab = 'highlights'"
+          >
+            Highlights
+          </button>
+        </nav>
 
-      <!-- Shared content container — empty when no tab is active -->
-      <div class="tab-content-area">
-        <Transition name="tab-fade" mode="out-in">
-          <div v-if="activeTab === 'highlights'" key="highlights" class="tab-panel">
-            <ul class="highlight-list">
-              <li v-for="item in about.highlights" :key="item">{{ item }}</li>
-            </ul>
-            <div class="skill-tags">
-              <span v-for="skill in about.topSkills" :key="skill">{{ skill }}</span>
+        <div class="tab-content-area">
+          <Transition name="tab-fade" mode="out-in">
+            <div v-if="activeTab === 'highlights'" key="highlights" class="tab-panel">
+              <ul class="highlight-list">
+                <li v-for="item in about.highlights" :key="item">{{ item }}</li>
+              </ul>
+              <div class="skill-tags">
+                <span v-for="skill in about.topSkills" :key="skill">{{ skill }}</span>
+              </div>
             </div>
-          </div>
-          <div v-else-if="activeTab === 'bio'" key="bio" class="tab-panel">
-            <p class="bio">{{ about.bio }}</p>
-          </div>
-        </Transition>
+            <div v-else-if="activeTab === 'bio'" key="bio" class="tab-panel">
+              <p class="bio">{{ about.bio }}</p>
+            </div>
+          </Transition>
+        </div>
       </div>
 
     </div>

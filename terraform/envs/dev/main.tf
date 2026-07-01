@@ -1,3 +1,4 @@
+#bootstraps terraform
 terraform {
   required_version = ">= 1.12.0"
 
@@ -8,15 +9,15 @@ terraform {
     }
   }
 
-  # bucket, region, and dynamodb_table are passed at runtime via -backend-config flags.
-  # In CI/CD these come from GitHub Secrets. Locally, create a backend.hcl from
-  # terraform.tfvars.example and run: terraform init -backend-config=backend.hcl
+  #bucket, region, and dynamodb_table are passed at runtime via -backend-config flags.
+  #in deploy these come from GitHub Secrets. Locally, create a backend.hcl from
+  #terraform.tfvars.example and run: terraform init -backend-config=backend.hcl
   backend "s3" {
     key     = "dev/terraform.tfstate"
     encrypt = true
   }
 }
-
+#tells terraform which aws region to talk to
 provider "aws" {
   region = var.aws_region
 
@@ -28,17 +29,17 @@ provider "aws" {
     }
   }
 }
-
+#computes reusable string for use
 locals {
   site_bucket_name = "${var.project_name}-${var.environment}-site"
 }
 
 # ─── S3: Static Site Bucket ───────────────────────────────────────────────────
-
+#creates bucket to hold built static site files
 resource "aws_s3_bucket" "site" {
   bucket = local.site_bucket_name
 }
-
+#locks down all 4 public access controls to true (nobody can access files directly)
 resource "aws_s3_bucket_public_access_block" "site" {
   bucket = aws_s3_bucket.site.id
 
@@ -47,7 +48,7 @@ resource "aws_s3_bucket_public_access_block" "site" {
   block_public_policy     = true
   restrict_public_buckets = true
 }
-
+#enables s3 object versioning in case of rollbacks
 resource "aws_s3_bucket_versioning" "site" {
   bucket = aws_s3_bucket.site.id
 
@@ -55,14 +56,14 @@ resource "aws_s3_bucket_versioning" "site" {
     status = "Enabled"
   }
 }
-
+#attaches a bucket policy to bucket
 resource "aws_s3_bucket_policy" "site" {
   bucket = aws_s3_bucket.site.id
   policy = data.aws_iam_policy_document.site_bucket_policy.json
 
   depends_on = [aws_s3_bucket_public_access_block.site]
 }
-
+#generates IAM policy json that grants cloudfront permission to call s3:getObject
 data "aws_iam_policy_document" "site_bucket_policy" {
   statement {
     sid    = "AllowCloudFrontOAC"
@@ -85,7 +86,7 @@ data "aws_iam_policy_document" "site_bucket_policy" {
 }
 
 # ─── CloudFront ───────────────────────────────────────────────────────────────
-
+#id cloudfront uses to detch files from s3
 resource "aws_cloudfront_origin_access_control" "site" {
   name                              = "${var.project_name}-${var.environment}-oac"
   description                       = "OAC for ${var.project_name} ${var.environment} site"
@@ -93,7 +94,7 @@ resource "aws_cloudfront_origin_access_control" "site" {
   signing_behavior                  = "always"
   signing_protocol                  = "sigv4"
 }
-
+#named policy for cloudfront to inject security headers at every response
 resource "aws_cloudfront_response_headers_policy" "security_headers" {
   name    = "${var.project_name}-${var.environment}-security-headers"
   comment = "Security headers for ${var.project_name} ${var.environment}"
@@ -127,7 +128,7 @@ resource "aws_cloudfront_response_headers_policy" "security_headers" {
     }
   }
 }
-
+#the main distribution
 resource "aws_cloudfront_distribution" "site" {
   enabled             = true
   is_ipv6_enabled     = true
@@ -148,13 +149,13 @@ resource "aws_cloudfront_distribution" "site" {
     cached_methods         = ["GET", "HEAD"]
     compress               = true
 
-    # AWS managed CachingOptimized policy
+    #AWS managed CachingOptimized policy
     cache_policy_id            = "658327ea-f89d-4fab-a63d-7e88639e58f6"
     response_headers_policy_id = aws_cloudfront_response_headers_policy.security_headers.id
   }
 
-  # S3 returns 403 for missing keys (bucket is private, no public access).
-  # Nuxt client-side routing requires the shell to be served for all paths.
+  #s3 returns 403 for missing keys (bucket is private, no public access).
+  #nuxt client-side routing requires the shell to be served for all paths.
   custom_error_response {
     error_code            = 403
     response_code         = 200
