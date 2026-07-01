@@ -34,3 +34,22 @@ variable "price_class" {
   type        = string
   default     = "PriceClass_100"
 }
+
+#cloudflare API token — never hardcode; injected via TF_VAR_cloudflare_api_token in CI
+variable "cloudflare_api_token" {
+  description = "Cloudflare API token with DNS edit permissions for both zones"
+  type        = string
+  sensitive   = true
+}
+
+variable "primary_domain" {
+  description = "Primary domain served by CloudFront (e.g. seanbroderick.dev)"
+  type        = string
+  default     = "seanbroderick.dev"
+}
+
+variable "secondary_domain" {
+  description = "Secondary domain that 301-redirects to the primary (e.g. seanmbroderick.com)"
+  type        = string
+  default     = "seanmbroderick.com"
+}

@@ -7,6 +7,10 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 5.0"
     }
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "~> 4.0"
+    }
   }
 
   #bucket, region, and dynamodb_table are passed at runtime via -backend-config flags.
@@ -28,6 +32,24 @@ provider "aws" {
       ManagedBy   = "Terraform"
     }
   }
+}
+
+#explicit us-east-1 alias required for ACM certs used by CloudFront (global service, must be us-east-1)
+provider "aws" {
+  alias  = "us_east_1"
+  region = "us-east-1"
+
+  default_tags {
+    tags = {
+      Environment = var.environment
+      Project     = var.project_name
+      ManagedBy   = "Terraform"
+    }
+  }
+}
+
+provider "cloudflare" {
+  api_token = var.cloudflare_api_token
 }
 #computes reusable string for use
 locals {
@@ -135,6 +157,7 @@ resource "aws_cloudfront_distribution" "site" {
   default_root_object = "index.html"
   price_class         = var.price_class
   comment             = "${var.project_name}-${var.environment}"
+  aliases             = [var.primary_domain]
 
   origin {
     domain_name              = aws_s3_bucket.site.bucket_regional_domain_name
@@ -176,7 +199,10 @@ resource "aws_cloudfront_distribution" "site" {
     }
   }
 
+  #ACM cert validated in dns.tf; sni-only covers all modern browsers
   viewer_certificate {
-    cloudfront_default_certificate = true
+    acm_certificate_arn      = aws_acm_certificate_validation.site.certificate_arn
+    ssl_support_method       = "sni-only"
+    minimum_protocol_version = "TLSv1.2_2021"
   }
 }
