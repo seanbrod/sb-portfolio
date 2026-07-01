@@ -1,3 +1,12 @@
+output "acm_certificate_arn" {
+  description = "Validated ACM certificate ARN attached to the CloudFront distribution"
+  value       = aws_acm_certificate_validation.site.certificate_arn
+}
+
+output "primary_domain" {
+  description = "Primary domain served by CloudFront"
+  value       = var.primary_domain
+}
 
 output "environment" {
   description = "Environment name"
