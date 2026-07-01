@@ -1,118 +1,245 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { about } from '~/data/about'
 
 useSeoMeta({ title: 'About' })
+
+const activeTab = ref<'highlights' | 'bio' | null>(null)
+
+const subtitleParts = about.subtitle.split(' · ')
+const institution = subtitleParts[0]
+const specialization = subtitleParts.slice(1).join(' · ')
 </script>
 
 <template>
   <div class="about">
-    <section class="intro">
-      <h1>{{ about.name }}</h1>
-      <p class="title">{{ about.title }}</p>
-      <p class="subtitle">{{ about.subtitle }}</p>
-      <p class="availability">{{ about.availability }}</p>
-      <p class="bio">{{ about.bio }}</p>
-    </section>
 
-    <section>
-      <h2>Highlights</h2>
-      <ul class="highlight-list">
-        <li v-for="item in about.highlights" :key="item">{{ item }}</li>
-      </ul>
-    </section>
+    <div class="identity-center">
 
-    <section>
-      <h2>Tech Skills</h2>
-      <ul class="skill-tags">
-        <li v-for="skill in about.topSkills" :key="skill">{{ skill }}</li>
-      </ul>
-      <p class="languages">{{ about.languages.join(' · ') }}</p>
-    </section>
+      <!-- Identity hierarchy -->
+      <h1>SEAN BRODERICK</h1>
+      <p class="id-role">{{ about.title }} | {{ institution }}</p>
+      <p class="id-meta">{{ specialization }}</p>
+      <span class="availability">{{ about.availability }}</span>
 
-    <section class="socials-section">
-      <h2>Socials</h2>
-      <div class="socials">
-        <a
-          v-for="link in about.links"
-          :key="link.label"
-          :href="link.url"
-          target="_blank"
-          rel="noopener noreferrer"
-        >{{ link.label }}</a>
+      <!-- Hover-driven tab switcher — closes when cursor leaves entire block -->
+      <div class="tab-container" @mouseleave="activeTab = null">
+        <nav class="tab-nav">
+          <button
+            class="tab-link"
+            :class="{ active: activeTab === 'bio' }"
+            @mouseenter="activeTab = 'bio'"
+          >
+            Bio
+          </button>
+          <button
+            class="tab-link"
+            :class="{ active: activeTab === 'highlights' }"
+            @mouseenter="activeTab = 'highlights'"
+          >
+            Highlights
+          </button>
+        </nav>
+
+        <div class="tab-content-area">
+          <Transition name="tab-fade" mode="out-in">
+            <div v-if="activeTab === 'highlights'" key="highlights" class="tab-panel">
+              <ul class="highlight-list">
+                <li v-for="item in about.highlights" :key="item">{{ item }}</li>
+              </ul>
+              <div class="skill-tags">
+                <span v-for="skill in about.topSkills" :key="skill">{{ skill }}</span>
+              </div>
+            </div>
+            <div v-else-if="activeTab === 'bio'" key="bio" class="tab-panel">
+              <p class="bio">{{ about.bio }}</p>
+            </div>
+          </Transition>
+        </div>
       </div>
-    </section>
+
+    </div>
   </div>
 </template>
 
 <style scoped>
-.about { padding: 1rem 0; }
+/* ── Full-screen canvas ───────────────────────────── */
+.about {
+  position: fixed;
+  top: 4rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
 
-h1 { font-size: 2rem; margin: 0 0 0.2rem; color: var(--text); }
-.title { font-size: 1.1rem; font-weight: 600; color: var(--text); margin: 0 0 0.15rem; }
-.subtitle { font-size: 0.9rem; color: var(--text-muted); margin: 0 0 0.6rem; }
+/* ── Center identity column ───────────────────────── */
+.identity-center {
+  position: absolute;
+  top: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 1;
+  width: min(640px, 90vw);
+}
+
+h1 {
+  font-size: clamp(1.8rem, 3.5vw, 3.25rem);
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text);
+  margin: 0 0 0.55rem;
+  line-height: 1.05;
+  white-space: nowrap;
+}
+
+.id-role {
+  font-size: clamp(0.8rem, 1.3vw, 0.95rem);
+  font-weight: 500;
+  color: var(--text-muted);
+  margin: 0 0 0.25rem;
+  letter-spacing: 0.06em;
+}
+
+.id-meta {
+  font-size: clamp(0.72rem, 1.1vw, 0.82rem);
+  color: var(--text-faint);
+  margin: 0 0 1.25rem;
+  letter-spacing: 0.04em;
+}
+
 .availability {
   display: inline-block;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   font-weight: 600;
   color: var(--accent);
   background: rgba(96, 165, 250, 0.1);
   border: 1px solid rgba(96, 165, 250, 0.25);
   border-radius: 20px;
-  padding: 0.2rem 0.65rem;
-  margin: 0 0 1.2rem;
-}
-.bio { font-size: 1rem; line-height: 1.7; max-width: 680px; color: var(--text-muted); margin: 0; }
-
-section { margin-bottom: 2.5rem; }
-
-h2 {
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-faint);
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 0.5rem;
-  margin-bottom: 1rem;
+  padding: 0.2rem 0.75rem;
+  letter-spacing: 0.06em;
 }
 
-.highlight-list { list-style: none; padding: 0; margin: 0; }
-.highlight-list li {
-  padding: 0.5rem 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 0.9rem;
+/* ── Tab nav: exact mirror of .site-nav ───────────── */
+.tab-nav {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.tab-link {
+  background: none;
+  border: none;
+  padding: 0 0 2px;
+  font-family: inherit;
+  cursor: pointer;
   color: var(--text-muted);
-}
-.highlight-list li::before {
-  content: '→ ';
-  color: var(--accent);
-}
-
-.skill-tags { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
-.skill-tags li {
-  padding: 0.3rem 0.75rem;
-  background: rgba(96, 165, 250, 0.1);
-  border: 1px solid rgba(96, 165, 250, 0.25);
-  border-radius: 4px;
-  font-size: 0.875rem;
-  color: var(--accent);
-}
-.languages { margin: 0.75rem 0 0; font-size: 0.8rem; color: var(--text-faint); }
-
-.socials { display: flex; gap: 1.5rem; flex-wrap: wrap; }
-.socials a {
-  color: var(--accent);
-  text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 600;
-  padding-bottom: 2px;
+  font-size: 0.95rem;
   background-image: linear-gradient(var(--accent), var(--accent));
   background-size: 0% 2px;
   background-repeat: no-repeat;
   background-position: left bottom;
   transition: color 0.2s, background-size 0.25s ease;
 }
-.socials a:hover {
+
+.tab-link:hover {
   color: var(--text);
   background-size: 100% 2px;
+}
+
+.tab-link.active {
+  color: var(--text);
+  font-weight: 600;
+  background-size: 100% 2px;
+}
+
+/* ── Content area ─────────────────────────────────── */
+.tab-content-area {
+  margin-top: 1.5rem;
+  text-align: left;
+}
+
+/* ── Fade transition ──────────────────────────────── */
+.tab-fade-enter-active,
+.tab-fade-leave-active {
+  transition: opacity 0.15s ease;
+}
+
+.tab-fade-enter-from,
+.tab-fade-leave-to {
+  opacity: 0;
+}
+
+/* ── Highlights list ──────────────────────────────── */
+.highlight-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.9rem;
+}
+
+.highlight-list li {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.highlight-list li::before {
+  content: '→ ';
+  color: var(--accent);
+}
+
+/* ── Skill tags ───────────────────────────────────── */
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.skill-tags span {
+  font-size: 0.8rem;
+  padding: 0.2rem 0.6rem;
+  background: rgba(96, 165, 250, 0.08);
+  border: 1px solid rgba(96, 165, 250, 0.2);
+  border-radius: 4px;
+  color: var(--accent);
+}
+
+/* ── Bio ──────────────────────────────────────────── */
+.bio {
+  font-size: 0.92rem;
+  line-height: 1.8;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ── Mobile ───────────────────────────────────────── */
+@media (max-width: 768px) {
+  .about {
+    position: static;
+    height: auto;
+    overflow-y: auto;
+    min-height: calc(100vh - 4rem);
+    padding: 1.5rem;
+  }
+
+  .identity-center {
+    position: static;
+    transform: none;
+    width: 100%;
+    padding-top: 1rem;
+  }
+
+  h1 {
+    white-space: normal;
+    font-size: 1.75rem;
+    letter-spacing: 0.1em;
+  }
 }
 </style>
