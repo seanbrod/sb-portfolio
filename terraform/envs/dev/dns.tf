@@ -79,17 +79,30 @@ resource "cloudflare_record" "secondary_www" {
 }
 
 #301 permanent redirect: all seanmbroderick.com traffic → seanbroderick.dev
-#$1 = subdomain wildcard, $2 = path — preserves the URL path on redirect
-resource "cloudflare_page_rule" "secondary_redirect" {
-  zone_id  = data.cloudflare_zone.secondary.id
-  target   = "*${var.secondary_domain}/*"
-  priority = 1
-  status   = "active"
+#uses the modern Dynamic Redirect ruleset (replaces deprecated cloudflare_page_rule)
+#requires "Transform Rules > Edit" on the Cloudflare API token
+resource "cloudflare_ruleset" "secondary_redirect" {
+  zone_id     = data.cloudflare_zone.secondary.id
+  name        = "redirect-to-primary"
+  description = "301 redirect all traffic to ${var.primary_domain}"
+  kind        = "zone"
+  phase       = "http_request_dynamic_redirect"
 
-  actions {
-    forwarding_url {
-      url         = "https://${var.primary_domain}/$2"
-      status_code = 301
+  rules {
+    action      = "redirect"
+    description = "Redirect all to primary domain, preserving path and query string"
+    enabled     = true
+    expression  = "true"
+
+    action_parameters {
+      from_value {
+        status_code = 301
+        target_url {
+          #concat preserves the original path (e.g. /resume → seanbroderick.dev/resume)
+          expression = "concat(\"https://${var.primary_domain}\", http.request.uri.path)"
+        }
+        preserve_query_string = true
+      }
     }
   }
 }
