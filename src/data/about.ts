@@ -10,7 +10,7 @@ export const about = {
   highlights: [
     'Currently building multi-agent AI systems at Progressive',
     'Shipped tools saving $25K+/yr and 15 hrs/wk in production',
-    '~2x as Treasurer, securing Anduril, GE & Boom Supersonic as sponsors',
+    'Doubled annual organizational budget for Buckeye Vertical by securing sponsorships from Anduril, GE, and Boom Supersonic.',
   ],
 
   topSkills: ['Python', 'LLM / Multi-Agent Systems', 'Kafka', 'Spark', 'AWS', 'Docker', 'Computer Vision'],
