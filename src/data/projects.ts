@@ -13,7 +13,7 @@ export const projects: Project[] = [
     description: 'This site — a static portfolio built with Nuxt.js/Vue.js, hosted on AWS CloudFront with a private S3 origin (OAC). Infrastructure provisioned with Terraform and deployed via GitHub Actions using OIDC.',
     tech: ['Nuxt.js', 'Vue.js', 'AWS CloudFront', 'AWS S3', 'Terraform', 'GitHub Actions'],
     github: 'https://github.com/seanbrod/sb-portfolio',
-    url: null,
+    url: 'https://seanbroderick.dev/',
     status: 'live',
   },
   {
@@ -28,8 +28,8 @@ export const projects: Project[] = [
     name: 'Spotify Organizer',
     description: 'Tool to untangle a disorganized Spotify library — analyzes songs across all your playlists and reorganizes them into logical groups based on genre, tempo, and vibe using Spotify\'s audio features API.',
     tech: ['Python', 'Spotify API'],
-    github: null,
+    github: 'https://github.com/seanbrod/spotify-organizer',
     url: null,
-    status: 'planned',
+    status: 'in-progress',
   },
 ]
