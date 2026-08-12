@@ -8,12 +8,12 @@ export const about = {
   availability: 'Graduating May 2027',
 
   highlights: [
-    'Currently building multi-agent AI systems at Progressive',
+    'Built multi-agent AI systems at Progressive Insurance',
     'Shipped tools saving $25K+/yr and 15 hrs/wk in production',
     'Doubled annual organizational budget for Buckeye Vertical by securing sponsorships from Anduril, GE, and Boom Supersonic.',
   ],
 
-  topSkills: ['Python', 'LLM / Multi-Agent Systems', 'Kafka', 'Spark', 'AWS', 'Docker', 'Computer Vision'],
+  topSkills: ['Python', 'LLM / Multi-Agent Systems', 'Kafka', 'Spark', 'AWS', 'Docker', 'Machine Learning'],
 
   languages: ['English (native)', 'Mandarin (proficient)', 'ASL (basic)'],
 

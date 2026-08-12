@@ -5,7 +5,7 @@ export const skills = [
   },
   {
     category: 'AI & Machine Learning',
-    items: ['PyTorch', 'scikit-learn', 'vLLM', 'Pandas', 'Hugging Face', 'Data Clustering', 'Databricks'],
+    items: ['PyTorch', 'Scikit-Learn', 'vLLM', 'Pandas', 'Hugging Face', 'Data Clustering', 'Databricks'],
   },
   {
     category: 'Agentic AI & LLM',
@@ -30,7 +30,7 @@ export const experience = [
     title: 'Software Developer Intern',
     company: 'Progressive Insurance',
     location: 'Mayfield Village, OH',
-    period: 'May 2026 – Present',
+    period: 'May 2026 – August 2026',
     bullets: [
       'Engineered a multi-agent daily research system using frontier LLMs, MCP, AWS, Terraform, and Google A2A that autonomously surfaces emerging tech trends and delivers curated digest emails to internal subscribers.',
       'Designed and built a full-stack Nuxt.js application that automates the project intake lifecycle for the Innovation Services team. Engineered a voice-to-voice AI agent meeting interface, secure authentication, and a serverless AWS backend (DynamoDB, S3, SNS, SES, Bedrock) deployed via Terraform to eliminate manual intake workflows.',
