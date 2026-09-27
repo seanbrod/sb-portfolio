@@ -33,9 +33,9 @@ export const projects: Project[] = [
     status: 'in-progress',
   },
   {
-    name: 'Agent Researcher',
-    description: 'Multi-agent AI researcher which goes out and pull relevent news based on interests. More of a personal experiment in building multi-agent systems locally after building large scale systems in industry.',
-    tech: ['Python', 'MCP', 'Google A2A'],
+    name: 'Budget Dashboard',
+    description: 'An application that keeps track of multiple personal accounts, organizes assets, and manages a personal budget through a dashboard. Created out of frustration with maintaining a budget in Excel.',
+    tech: ['Python', 'Plaid', 'Grafana'],
     github: null,
     url: null,
     status: 'planned',
