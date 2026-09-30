@@ -47,7 +47,7 @@ export const experience = [
     ],
   },
   {
-    title: 'Cybersecurity & Software Intern',
+    title: 'Software Engineer Intern',
     company: 'SenseICs Corporation',
     location: 'Columbus, OH',
     period: 'August 2024 – May 2025',
@@ -57,7 +57,7 @@ export const experience = [
     ],
   },
   {
-    title: 'AI & Software Intern',
+    title: 'AI Engineer Intern',
     company: 'Hain Capital Group',
     location: 'Rutherford, NJ',
     period: 'May 2024 – July 2024',
